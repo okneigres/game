@@ -1,0 +1,177 @@
+<head>
+   <script src="game.js"></script>
+</head>
+<body>
+
+<svg id="svgid" viewBox="0 0 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 95vw; height: 95vh;">
+   <rect x="179" y="650" width="425" height="350" fill="#C4C4C4"/>
+   <rect x="779" y="650" width="425" height="350" fill="#C4C4C4"/>
+   <circle id="sdfst" cx="328" cy="266" r="29" fill="#A0A0A0"/>
+   <circle id="sdfsd" cx="328" cy="266" r="29" fill="#101010"/>
+</svg>
+
+<script>
+   var x = document.getElementById('sdfsd');
+   var t = document.getElementById('sdfst');
+   x.attributes.cy.nodeValue = 50;
+   var rt0 = Date.now();
+
+   var s = document.getElementById('svgid');
+
+   var g = -200;
+   var ra = 4;
+   window.log = {};
+
+   var player = {
+      vx:-50,
+      vy:0,
+      x:Number(x.attributes.cx.nodeValue)/20,
+      y:(1000 - Number(x.attributes.cy.nodeValue))/20,
+      tr: 2,
+      r: 6,
+   };
+
+
+   (function render(){
+
+      var rt = Date.now();
+      var drt = (rt - rt0)/1000;
+
+      if(drt > 0.05) {
+         drt = 0.05;
+      }
+
+      adjustSizes(drt);
+
+      var oplayerpos = {
+         cx: x.attributes.cx.nodeValue,
+         cy: x.attributes.cy.nodeValue,
+         r : x.attributes.r .nodeValue,
+
+      };
+
+      if(player.y > 0.01 || Math.abs(player.vy) > 1) {
+         player.vy += -100 * Math.sqrt(player.r * 2) * drt;
+         player.y  += player.vy * drt;
+      } else {
+         player.vy = 0;
+         player.y  = 0;
+      }
+
+      player.x += player.vx * drt;
+
+      collisionDetection(drt);
+
+      x.attributes.cx.nodeValue = player.x * 20;
+      x.attributes.cy.nodeValue = 1000 - player.y * 20 - player.r * 20;
+      x.attributes.r.nodeValue = player.r * 20;
+
+      t.attributes.cx.nodeValue = oplayerpos.cx;
+      t.attributes.cy.nodeValue = oplayerpos.cy;
+      t.attributes.r .nodeValue = oplayerpos.r ;
+
+      var vscale = Math.pow(player.r / 2, 2/3);
+
+
+      s.viewBox.baseVal.y = 1000 - vscale * 1000;
+      s.viewBox.baseVal.width = vscale * 1000;
+      s.viewBox.baseVal.height = vscale * 1000;
+
+      if(Number(x.attributes.cx.nodeValue) - player.r * 20 * 2 < s.viewBox.baseVal.x ) {
+         s.viewBox.baseVal.x = Number(x.attributes.cx.nodeValue) - player.r * 20 * 2;
+      }
+
+      if(Number(x.attributes.cx.nodeValue) + player.r * 20 * 2 > s.viewBox.baseVal.x + s.viewBox.baseVal.width ) {
+         s.viewBox.baseVal.x = Number(x.attributes.cx.nodeValue) + player.r * 20 * 2 - s.viewBox.baseVal.width;
+      }
+
+      if(Number(x.attributes.cy.nodeValue) - player.r * 20 * 2 < s.viewBox.baseVal.y ) {
+         s.viewBox.baseVal.y = Number(x.attributes.cy.nodeValue) - player.r * 20 * 2;
+      }
+
+
+
+      // s.style.transform = 'scale(' + (1 / Math.pow(player.r / 2, 2/3)).toFixed(4) + ')';
+
+      // console.log(x.attributes.cy.nodeValue);
+
+      // console.log(log);
+      log = {};
+
+      rt0 = rt;
+
+      window.requestAnimationFrame(render);
+   })();
+
+
+   function adjustSizes(drt) {
+      if(player.r !== player.tr) {
+         var rv = player.r > player.tr ? player.tr * 3 : player.tr;
+         player.r += (player.r > player.tr ? -1 : 1) *rv * ra * drt;
+         if( ( player.r > player.tr ? player.r / player.tr : player.tr / player.r ) < 1.1) {
+            player.r = player.tr;
+         }
+      }
+   }
+
+
+   function collisionDetection(drt){
+
+
+      if(player.y < 0 ) {
+         player.y = -player.y;
+         if(player.vy < 0 ) {
+            player.vy = -player.vy * ( 1 / ( 1 + Math.exp(Math.abs(player.vy)/ (player.r * 100 ) ) ) );
+            if(player.vy < 30) {
+               player.vy = 0;
+            }
+         }
+      }
+
+      if(player.x < 0 ) {
+         player.x = -player.x;
+         player.vx = -player.vx * ( 1 / ( 1 + Math.exp(Math.abs(player.vy)/ (player.r * 100 )) ) );
+
+      }
+
+      if(player.x > 80 ) {
+         player.x = 80 - (player.x - 80);
+         player.vx = -player.vx * ( 1 / ( 1 + Math.exp(Math.abs(player.vy)/ (player.r * 100 )) ) );
+
+      }
+
+      if(player.y < 1) {
+         if(player.vx > 0) {
+            player.vx -= 10 * drt;
+         }
+         if(player.vx < 0) {
+            player.vx += 10 * drt;
+         }
+         if(Math.abs(player.vx) < 1) {
+            player.vx = 0;
+         }
+      }
+
+   }
+
+   document.addEventListener('keydown', function(event) {
+      console.log(event.key);
+      var max_vx = Math.sqrt(player.r * 2) * 30;
+      var max_vy = Math.sqrt(player.r * 2) * 50;
+      var max_vy_down = Math.sqrt(player.r * 2) * 25;
+      switch(event.key) {
+         case 'ArrowLeft'  : player.vx = -(player.vx > max_vx ? player.vx : max_vx)   ; break;
+         case 'ArrowRight' : player.vx =   player.vx > max_vx ? player.vx : max_vx   ; break;
+         case 'ArrowDown': player.vy = player.vy < -max_vy_down ? player.vy : -max_vy_down; break;
+         case 'ArrowUp':
+         case ' ': player.vy = max_vy ; break;
+         case 'w':  player.tr *=3  ; break;
+         // case 's':
+         case 'x':  player.tr /=3  ; break;
+      }
+   });
+
+</script>
+
+
+</body>
