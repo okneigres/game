@@ -1,0 +1,22 @@
+<svg width="1000" height="1000" viewBox="0 0 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame" clip-path="url(#clip0)">
+<rect width="1000" height="1000" fill="white"/>
+<path id="Rectangle" d="M92.4706 942.863L328 906V1000H20L92.4706 942.863Z" fill="#8470BF"/>
+<path id="Rectangle_2" d="M495.822 958.855L573.819 979.013L565.971 999.786L468 962.773L495.822 958.855Z" fill="#8470BF"/>
+<g id="Rectangle_3">
+<path d="M670 935L693 904L752.819 963.013L676 977L647 946.773L670 935Z" fill="#8470BF"/>
+<path d="M776.229 1000.64L804.5 954.893L817.5 971.134L812.41 1000.64L780.5 975.12L776.229 1000.64Z" fill="#8470BF"/>
+<path d="M830.229 990.413L858.5 944.666L871.5 960.907L866.41 990.413L834.5 964.893L830.229 990.413Z" fill="#8470BF"/>
+<path d="M881.5 964.893L909.771 919.146L922.771 935.386L917.681 964.893L885.771 939.373L881.5 964.893Z" fill="#8470BF"/>
+<path d="M932.771 945.386L961.042 899.639L974.042 915.88L968.951 945.386L937.042 919.866L932.771 945.386Z" fill="#8470BF"/>
+</g>
+<circle id="me_shadow" cx="309" cy="248" r="29" fill="#847878"/>
+<circle id="me" cx="328" cy="263" r="29" fill="#101010"/>
+<circle id="Ellipse 2" cx="607.5" cy="348.5" r="71.5" fill="#FFE600"/>
+</g>
+<defs>
+<clipPath id="clip0">
+<rect width="1000" height="1000" fill="white"/>
+</clipPath>
+</defs>
+</svg>
