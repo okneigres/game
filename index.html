@@ -3,16 +3,24 @@
 </head>
 <body>
 
-<svg id="svgid" viewBox="0 0 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 95vw; height: 95vh;">
-   <rect x="179" y="650" width="425" height="350" fill="#C4C4C4"/>
-   <rect x="779" y="650" width="425" height="350" fill="#C4C4C4"/>
-   <circle id="sdfst" cx="328" cy="266" r="29" fill="#A0A0A0"/>
-   <circle id="sdfsd" cx="328" cy="266" r="29" fill="#101010"/>
-</svg>
+<script>
+   var request = new XMLHttpRequest();
+   request.open('GET', 'level_test0.svg', false);  // `false` makes the request synchronous
+   request.send(null);
+
+   if (request.status === 200) {
+      console.log(request.responseText);
+      document.write(request.responseText.replace('<svg ', '<svg id="svgid" style="width: 95vw; height: 95vh;"').replace(/width=/, '--witdh=').replace(/height=/, '--height=').replace('clip-path', '--clip-path'));
+   } else {
+      alert('Something went wrong');
+   }
+</script>
 
 <script>
-   var x = document.getElementById('sdfsd');
-   var t = document.getElementById('sdfst');
+
+
+   var x = document.getElementById('me');
+   var t = document.getElementById('me_shadow');
    x.attributes.cy.nodeValue = 50;
    var rt0 = Date.now();
 
