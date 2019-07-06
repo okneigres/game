@@ -122,7 +122,7 @@
          player.y = -player.y;
          if(player.vy < 0 ) {
             player.vy = -player.vy * ( 1 / ( 1 + Math.exp(Math.abs(player.vy)/ (player.r * 100 ) ) ) );
-            if(player.vy < 30) {
+            if(player.vy < player.r * 15) {
                player.vy = 0;
             }
          }
